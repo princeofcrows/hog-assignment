@@ -162,7 +162,19 @@ def play(strategy0, strategy1, update,
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
     # END PROBLEM 5
-    return score0, score1
+    return_cond = lambda  sc0, sc1: sc0 >= goal or sc1 >= goal 
+    def turn(who, score0, score1, strategy0, strategy1):
+        if(return_cond(score0, score1)):
+            return score0, score1
+        
+        if who == 0:
+            score0 = update(strategy0(score0, score1), score0, score1, dice)
+        else:
+            score1 = update(strategy1(score1, score0), score1, score0, dice)
+        who = 1 - who
+
+        return turn(who, score0, score1, strategy0, strategy1)
+    return turn(who, score0, score1, strategy0, strategy1)
 
 
 #######################
