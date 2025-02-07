@@ -92,12 +92,26 @@ def num_factors(n):
     """Return the number of factors of N, including 1 and N itself."""
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    return_condition = lambda x : x * x > n
+    is_divisible = lambda x : n % x == 0
+    increment = lambda x, y : 1 if x == y else 2
+    
+    def calc_num_factor(curr): 
+        if return_condition(curr):
+            return 0
+        if(is_divisible(curr)):
+            return calc_num_factor(curr + 1) + increment(curr, n / curr)
+        return calc_num_factor(curr + 1)
+    
+    return calc_num_factor(1)
     # END PROBLEM 4
 
 def sus_points(score):
     """Return the new score of a player taking into account the Sus Fuss rule."""
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    next_prime = lambda x: x if is_prime(x) else next_prime(x + 1)
+    return score if num_factors(score) not in [3, 4] else next_prime(score)
     # END PROBLEM 4
 
 def sus_update(num_rolls, player_score, opponent_score, dice=six_sided):
@@ -106,6 +120,8 @@ def sus_update(num_rolls, player_score, opponent_score, dice=six_sided):
     """
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    score = player_score + take_turn(num_rolls, player_score, opponent_score, dice)
+    return sus_points(score)
     # END PROBLEM 4
 
 
